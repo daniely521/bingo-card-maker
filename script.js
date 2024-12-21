@@ -75,5 +75,61 @@ document.getElementById("generate").addEventListener("click", function() {
 });
 
 document.getElementById('print').addEventListener("click", function() {
-    window.print();
+    // Create a new jsPDF instance
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF();
+    
+    const cards = document.querySelectorAll('.bingo-card');
+    const cardWidth = 85;  // Width of each bingo card in mm
+    const cardHeight = 85; // Height of each bingo card in mm
+    const spaceBetweenCards = 10; // Space between cards
+    
+    let xOffset = 10;
+    let yOffset = 10;
+
+    cards.forEach((card, index) => {
+        // Draw a rectangle for each card
+        pdf.setDrawColor(0); // Set border color to black
+        pdf.setLineWidth(0.5); // Set border thickness
+        pdf.rect(xOffset, yOffset, cardWidth, cardHeight); // Draw the card border
+        
+        // Draw the cells inside the card
+        const cells = card.querySelectorAll('.bingo-cell');
+        let cellWidth = cardWidth / 5;
+        let cellHeight = cardHeight / 5;
+
+        cells.forEach((cell, cellIndex) => {
+            const row = Math.floor(cellIndex / 5);
+            const col = cellIndex % 5;
+            const x = xOffset + col * cellWidth;
+            const y = yOffset + row * cellHeight;
+
+            // Draw the cell borders
+            pdf.setDrawColor(0);
+            pdf.rect(x, y, cellWidth, cellHeight); // Draw individual cell
+
+            // Add text to the cell
+            pdf.setFontSize(10);
+            pdf.text(cell.textContent, x + 5, y + 12); // Add text inside cell
+        });
+
+        // Move to the next position for the second card
+        xOffset += cardWidth + spaceBetweenCards;
+        
+        // If two cards are on one page, move to the second row
+        if (xOffset + cardWidth > pdf.internal.pageSize.width) {
+            xOffset = 10;
+            yOffset += cardHeight + spaceBetweenCards;
+        }
+
+        // Add a new page after two cards
+        if ((index + 1) % 2 === 0) {
+            pdf.addPage();
+            xOffset = 10; // Reset X offset for the new page
+            yOffset = 10; // Reset Y offset for the new page
+        }
+    });
+
+    // Save the generated PDF
+    pdf.save("bingo-cards.pdf");
 });
