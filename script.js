@@ -1,6 +1,4 @@
 document.getElementById("generate").addEventListener("click", function() {
-    const generatedCards = new Set();
-    generatedCards.clear();
     const inputArea = document.getElementById("input-area");
     const options = inputArea.value.split('\n').filter(opt => opt.trim !== '');
     const cardCount = parseInt(document.getElementById('card-count').value, 10);
@@ -19,19 +17,11 @@ document.getElementById("generate").addEventListener("click", function() {
     };
 
     const createBingoCard = () => {
-        let selectedOptions;
-        let cardKey;
-
-        do {
-            const shuffledOptions = shuffle([options]);
-            selectedOptions = shuffledOptions.slice(0, 25);
-            cardKey = selectedOptions.join('|');
-        } while (generatedCards.has(cardKey));
-
-        generatedCards.add(cardKey);
-
         const card = document.createElement('div');
         card.className = 'bingo-card';
+
+        const shuffledOptions = shuffle([...options]);
+        const selectedOptions = shuffledOptions.slice(0, 25);
 
         selectedOptions.forEach(option => {
             const cell = document.createElement('div');
