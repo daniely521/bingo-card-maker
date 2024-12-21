@@ -25,6 +25,7 @@ document.getElementById("generate").addEventListener("click", function() {
         const card = document.createElement('div');
         card.className = 'bingo-card';
 
+
         // Shuffle options and select the first 25
         const shuffledOptions = shuffle([...options]);
         const selectedOptions = shuffledOptions.slice(0, 25);
