@@ -1,5 +1,6 @@
 body {
     margin: 20px;
+    text-align: center;
 }
 
 .bingo-card {
@@ -36,4 +37,29 @@ body {
 
 .title {
     display: block;
+}
+
+#input-area {
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+#number {
+    border-radius: 5px;
+}
+
+.btn {
+    margin-top: 20px;
+    width: 100px;
+    height: 30px;
+    border-radius: 10px;
+    border: none;
+    margin-left: 3px;
+}
+
+#generate {
+    height: 30px;
+    width: 100px;
+    border-radius: 10px;
+    border: none;
 }
